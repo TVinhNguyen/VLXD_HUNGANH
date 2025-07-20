@@ -1,32 +1,12 @@
 <%- include('../partials/header') %>
-
 <div x-data="{ selectedImage: 0, activeTab: 'specifications' }" class="min-h-screen bg-white">
-    
-    <!-- Header -->
-    <header class="bg-white shadow-md py-4 sticky top-0 z-40">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold">
-                VỮNG<span class="text-yellow-400">XÂY</span>
-            </a>
-            <div class="flex items-center space-x-4">
-                <a href="#" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-slate-200 bg-transparent hover:bg-slate-100 h-9 px-3">
-                    <i class="fas fa-phone h-4 w-4 mr-2"></i>
-                    Call Us
-                </a>
-                <a href="#" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-yellow-400 hover:bg-yellow-500 text-slate-800 h-9 px-3">
-                    Get Quote
-                </a>
-            </div>
-        </div>
-    </header>
-
     <!-- Breadcrumb -->
     <div class="bg-slate-50 py-4">
         <div class="container mx-auto px-4">
             <div class="flex items-center space-x-2 text-sm text-slate-600">
-                <a href="/" class="hover:text-yellow-400">Home</a>
+                <a href="/" class="hover:text-yellow-400">Trang chủ</a>
                 <span>/</span>
-                <a href="/san-pham" class="hover:text-yellow-400">Products</a>
+                <a href="/san-pham" class="hover:text-yellow-400">Sản phẩm</a>
                 <span>/</span>
                 <span class="text-slate-800"><%= product.name %></span>
             </div>
@@ -75,7 +55,7 @@
 
                 <div class="bg-slate-50 p-6 rounded-lg">
                     <div class="text-3xl font-bold text-slate-800 mb-2">₫<%= product.price.toLocaleString('vi-VN') %></div>
-                    <div class="text-slate-600 mb-4">Price range: Liên hệ</div>
+                    <div class="text-slate-600 mb-4">Phạm vi giá: Liên hệ</div>
                     <div class="grid grid-cols-2 gap-4 text-sm">
                         <div class="flex items-center space-x-2">
                             <i class="fas fa-truck h-4 w-4 text-yellow-400"></i>
@@ -91,11 +71,11 @@
                 <div class="flex flex-col sm:flex-row gap-4">
                     <a href="#" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-yellow-400 hover:bg-yellow-500 text-slate-800 h-12 px-6 font-semibold flex-1">
                         <i class="fas fa-calculator mr-2 h-5 w-5"></i>
-                        Calculate Quantity
+                        Tính toán số lượng
                     </a>
                     <a href="#" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-slate-200 bg-transparent hover:bg-slate-100 h-12 px-6 flex-1">
                         <i class="fas fa-phone mr-2 h-5 w-5"></i>
-                        Call for Quote
+                        Liên hệ báo giá
                     </a>
                 </div>
 
@@ -119,22 +99,22 @@
                     <button @click="activeTab = 'specifications'" 
                             :class="{ 'text-yellow-400 border-yellow-400': activeTab === 'specifications', 'text-slate-500 border-transparent hover:text-slate-800 hover:border-slate-300': activeTab !== 'specifications' }" 
                             class="relative font-semibold py-4 px-2 border-b-2 transition-colors">
-                        Specifications
+                        Thông số kỹ thuật
                     </button>
                     <button @click="activeTab = 'features'" 
                             :class="{ 'text-yellow-400 border-yellow-400': activeTab === 'features', 'text-slate-500 border-transparent hover:text-slate-800 hover:border-slate-300': activeTab !== 'features' }" 
                             class="relative font-semibold py-4 px-2 border-b-2 transition-colors">
-                        Features
+                        Tính năng
                     </button>
                     <button @click="activeTab = 'applications'" 
                             :class="{ 'text-yellow-400 border-yellow-400': activeTab === 'applications', 'text-slate-500 border-transparent hover:text-slate-800 hover:border-slate-300': activeTab !== 'applications' }" 
                             class="relative font-semibold py-4 px-2 border-b-2 transition-colors">
-                        Applications
+                        Ứng dụng
                     </button>
                     <button @click="activeTab = 'certifications'" 
                             :class="{ 'text-yellow-400 border-yellow-400': activeTab === 'certifications', 'text-slate-500 border-transparent hover:text-slate-800 hover:border-slate-300': activeTab !== 'certifications' }" 
                             class="relative font-semibold py-4 px-2 border-b-2 transition-colors">
-                        Certifications
+                        Chứng nhận
                     </button>
                 </div>
             </div>
@@ -242,7 +222,7 @@
         <!-- Related Products -->
         <% if (relatedProducts.length > 0) { %>
             <div>
-                 <h2 class="text-3xl font-bold text-slate-800 mb-8">Related Products</h2>
+                 <h2 class="text-3xl font-bold text-slate-800 mb-8">Sản phẩm liên quan</h2>
                  <div class="grid md:grid-cols-3 gap-8">
                     <% relatedProducts.forEach(relProduct => { %>
                          <div class="group bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
@@ -259,7 +239,7 @@
                                 <p class="text-2xl font-bold text-slate-800 mb-4">₫<%= relProduct.price.toLocaleString('vi-VN') %></p>
                                 <a href="/san-pham/<%= relProduct.slug %>" 
                                    class="inline-flex items-center justify-center w-full h-10 rounded-md text-sm font-medium bg-slate-800 text-white hover:bg-slate-700 transition-colors">
-                                    Xem Chi Tiết
+                                    Xem chi tiết
                                 </a>
                             </div>
                         </div>
@@ -272,29 +252,25 @@
     <!-- CTA Section -->
     <section class="py-16 bg-slate-800">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">Need Help Choosing the Right Product?</h2>
+            <h2 class="text-3xl font-bold text-white mb-4">Cần hỗ trợ chọn sản phẩm phù hợp?</h2>
             <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                Our technical experts are here to help you select the perfect materials for your project.
+                Các chuyên gia kỹ thuật của chúng tôi luôn sẵn sàng giúp bạn chọn lựa vật liệu hoàn hảo cho dự án của mình.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-yellow-400 hover:bg-yellow-500 text-slate-800 h-12 px-6 font-semibold">
                     <i class="fas fa-phone mr-2 h-5 w-5"></i>
-                    Technical Consultation
+                    Tư vấn kỹ thuật
                 </a>
                 <a href="#" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-white text-white hover:bg-white hover:text-slate-800 bg-transparent h-12 px-6">
                     <i class="fas fa-download mr-2 h-5 w-5"></i>
-                    Download Catalog
+                    Tải catalog
                 </a>
             </div>
         </div>
     </section>
-
 </div>
-
 <!-- JSON-LD Script cho SEO -->
 <script type="application/ld+json">
     <%- JSON.stringify(product.structuredData || {}) %>
 </script>
-
-
 <%- include('../partials/footer') %>
