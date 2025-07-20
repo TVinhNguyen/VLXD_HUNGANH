@@ -1,0 +1,39 @@
+<%# ----- Commitment Section (Tại Sao Chọn Chúng Tôi) ----- %>
+<section class="py-20 bg-slate-50">
+    <div class="container mx-auto px-4">
+
+        <!-- Tiêu đề của section -->
+        <div class="text-center mb-16">
+            <span class="inline-block bg-primary text-secondary font-semibold px-4 py-1 rounded-full text-sm mb-4">
+                Cam kết của chúng tôi
+            </span>
+            <h2 class="text-4xl font-bold text-slate-800 mb-4">Tại Sao Chọn Chúng Tôi?</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                Chúng tôi không chỉ bán vật liệu, chúng tôi mang đến sự an tâm cho mọi công trình của bạn.
+            </p>
+        </div>
+
+        <%# Kiểm tra xem biến commitments có tồn tại và có dữ liệu không %>
+        <% if(typeof commitments !== 'undefined' && commitments.length > 0) { %>
+            <!-- Bố cục lưới cho các thẻ cam kết -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <% commitments.forEach(commit => { %>
+                    <!-- Thẻ Cam kết -->
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-primary border-2 border-transparent">
+                        
+                        <!-- Icon được thiết kế lại, có nền riêng -->
+                        <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+                            <i class="fas <%= commit.icon %> text-primary text-4xl"></i>
+                        </div>
+                        
+                        <!-- Tiêu đề Cam kết -->
+                        <h3 class="text-xl font-bold text-secondary mb-3"><%= commit.title %></h3>
+                        
+                        <!-- Mô tả Cam kết -->
+                        <p class="text-slate-600 leading-relaxed"><%= commit.description %></p>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</section>

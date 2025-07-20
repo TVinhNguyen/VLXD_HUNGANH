@@ -1,0 +1,77 @@
+<%# ----- Products Section with Tabs (Pixel-Perfect Version) ----- %>
+<section id="products" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+
+        <!-- Tiêu đề của section -->
+        <div class="text-center mb-16">
+            <span class="inline-block bg-primary text-secondary font-semibold px-4 py-1 rounded-full text-sm mb-4">
+                Sản Phẩm Của Chúng Tôi
+            </span>
+            <h2 class="text-4xl font-bold text-slate-800 mb-4">Vật Liệu Xây Dựng Cao Cấp</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                Khám phá các dòng sản phẩm chất lượng cao của chúng tôi, được lựa chọn và kiểm định cẩn thận để đáp ứng những tiêu chuẩn khắt khe nhất.
+            </p>
+        </div>
+
+        <% if(typeof productsByCat !== 'undefined' && productsByCat.length > 0) { %>
+            <div x-data="{ activeTab: '<%= productsByCat[0].category %>' }">
+                
+                <!-- Danh sách các nút Tab - Được thiết kế lại cho chính xác -->
+                <div class="border-b border-slate-200 mb-12">
+                    <div class="grid w-full grid-cols-2 sm:grid-cols-3 max-w-2xl mx-auto">
+                        <% productsByCat.forEach(productGroup => { %>
+                            <button @click="activeTab = '<%= productGroup.category %>'"
+                                    class="relative text-lg font-semibold py-4 px-2 transition-colors duration-300 focus:outline-none"
+                                    :class="activeTab === '<%= productGroup.category %>' ? 'text-primary' : 'text-slate-500 hover:text-slate-800'">
+                                <span><%= productGroup.category %></span>
+
+                                <!-- Đường gạch chân màu vàng cho tab đang active -->
+                                <span x-show="activeTab === '<%= productGroup.category %>'"
+                                      x-transition
+                                      class="absolute bottom-0 left-0 w-full h-0.5 bg-primary"></span>
+                            </button>
+                        <% }) %>
+                    </div>
+                </div>
+
+                <!-- Nội dung các Tab -->
+                <% productsByCat.forEach(productGroup => { %>
+                    <div x-show="activeTab === '<%= productGroup.category %>'" x-cloak
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100">
+                        
+                        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+                            <% productGroup.items.forEach(item => { %>
+                                <!-- Product Card - Tái tạo chính xác từ JSX -->
+                                <div class="group border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+                                    <div class="p-0">
+                                        <div class="relative overflow-hidden">
+                                            <!-- Ảnh sản phẩm -->
+                                            <img src="<%= item.image %>" alt="<%= item.name %>"
+                                                 class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+                                            <!-- Huy hiệu -->
+                                            <div class="absolute top-4 right-4 bg-primary text-secondary px-3 py-1 rounded-full text-sm font-semibold">
+                                                Bán Chạy
+                                            </div>
+                                        </div>
+                                        <div class="p-6">
+                                            <h3 class="text-xl font-bold text-slate-800 mb-2 truncate" title="<%= item.name %>"><%= item.name %></h3>
+                                            <p class="text-2xl font-bold text-primary mb-4"><%= item.price %></p>
+                                            
+                                            <!-- Nút Xem chi tiết - class Tailwind thuần túy -->
+                                            <a href="/san-pham/<%= item.slug %>" class="w-full inline-block text-center py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-md transition-colors">
+                                                Xem Chi Tiết
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+
+    </div>
+</section>

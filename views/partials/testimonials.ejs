@@ -1,0 +1,52 @@
+<%# ----- Testimonials Section ----- %>
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+
+        <!-- Tiêu đề của section -->
+        <div class="text-center mb-16">
+            <span class="inline-block bg-primary text-secondary font-semibold px-4 py-1 rounded-full text-sm mb-4">
+                Phản Hồi Khách Hàng
+            </span>
+            <h2 class="text-4xl font-bold text-slate-800 mb-4">Khách Hàng Nói Gì Về Chúng Tôi</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                Sự hài lòng của khách hàng là minh chứng rõ ràng nhất cho chất lượng và dịch vụ của VLXD Hùng Anh.
+            </p>
+        </div>
+        
+        <%# Kiểm tra xem biến testimonials có tồn tại và có dữ liệu không %>
+        <% if(typeof testimonials !== 'undefined' && testimonials.length > 0) { %>
+            <!-- Bố cục lưới cho các thẻ nhận xét -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% testimonials.forEach(testimonial => { %>
+                    <!-- Thẻ nhận xét -->
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-lg p-8 shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                        <div class="flex flex-col h-full">
+                            <!-- Đánh giá sao -->
+                            <div class="flex items-center mb-4">
+                                <% for(let i = 0; i < testimonial.rating; i++) { %>
+                                    <i class="fas fa-star h-5 w-5 text-primary"></i>
+                                <% } %>
+                                <% for(let i = 0; i < 5 - testimonial.rating; i++) { %>
+                                     <i class="far fa-star h-5 w-5 text-primary/50"></i>
+                                <% } %>
+                            </div>
+
+                            <!-- Icon trích dẫn -->
+                            <i class="fas fa-quote-left h-8 w-8 text-primary/50 mb-4"></i>
+                            
+                            <!-- Nội dung nhận xét -->
+                            <p class="text-slate-600 mb-6 leading-relaxed italic flex-grow">"<%= testimonial.content %>"</p>
+
+                            <!-- Thông tin người nhận xét -->
+                            <div class="mt-auto">
+                                <div class="font-bold text-slate-800"><%= testimonial.name %></div>
+                                <div class="text-sm text-slate-500"><%= testimonial.company %></div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+
+    </div>
+</section>

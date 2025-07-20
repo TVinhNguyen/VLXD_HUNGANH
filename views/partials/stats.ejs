@@ -1,0 +1,26 @@
+<!-- 
+    Stats Section
+    - Sử dụng vòng lặp forEach của EJS để render các chỉ số.
+    - Dữ liệu 'stats' sẽ được truyền vào từ controller.
+-->
+<section class="py-20 bg-secondary">
+    <div class="container mx-auto px-4">
+        <!-- Kiểm tra xem biến stats có tồn tại và có dữ liệu không -->
+        <% if(typeof stats !== 'undefined' && stats.length > 0) { %>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <% stats.forEach(stat => { %>
+                    <div class="text-center">
+                        <div class="text-4xl lg:text-5xl font-bold text-primary mb-2">
+                            <%= stat.number.toLocaleString('vi-VN') %>
+                            <!-- Hiển thị suffix nếu có (ví dụ: '+', 'K') -->
+                            <% if (stat.suffix) { %>
+                                <span><%= stat.suffix %></span>
+                            <% } %>
+                        </div>
+                        <div class="text-slate-300 text-lg"><%= stat.label %></div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</section>

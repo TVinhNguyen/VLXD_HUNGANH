@@ -1,0 +1,89 @@
+<%- include('../partials/header') %>
+
+<div class="space-y-12">
+    <!-- Breadcrumbs và Tiêu đề Section -->
+    <section>
+        <!-- Breadcrumbs -->
+        <nav class="text-sm mb-4" aria-label="Breadcrumb">
+            <ol class="list-none p-0 inline-flex space-x-2 text-gray-500">
+                <li><a href="/" class="hover:text-primary">Trang chủ</a></li>
+                <li><span class="mx-2">/</span></li>
+                <li class="font-semibold text-secondary" aria-current="page"><%= category.name %></li>
+            </ol>
+        </nav>
+        <!-- Tiêu đề và Mô tả -->
+        <div class="text-center bg-white p-8 rounded-lg shadow-sm">
+            <h1 class="text-4xl font-bold text-secondary mb-2"><%= category.name %></h1>
+            <% if (category.description) { %>
+                <p class="text-gray-600 max-w-3xl mx-auto"><%- category.description %></p>
+            <% } %>
+        </div>
+    </section>
+
+    <!-- Thanh Lọc và Lưới Sản Phẩm -->
+    <section>
+        <!-- Thanh lọc và sắp xếp -->
+        <div class="bg-white p-4 rounded-lg shadow-sm mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="font-semibold text-gray-700">
+                Hiển thị <%= products.length %> sản phẩm
+            </p>
+            <div class="flex items-center gap-4">
+                <label for="sort" class="text-sm font-medium">Sắp xếp theo:</label>
+                <select id="sort" name="sort" class="rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
+                    <option>Mới nhất</option>
+                    <option>Giá: Thấp đến cao</option>
+                    <option>Giá: Cao đến thấp</option>
+                    <option>Tên: A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Lưới Sản Phẩm -->
+        <% if(products.length > 0) { %>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <% products.forEach(product => { %>
+                    <div class="group bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                        <div class="relative overflow-hidden h-56">
+                            <img src="<%= product.images[0] || 'https://via.placeholder.com/400x400.png?text=No+Image' %>" 
+                                 alt="<%= product.name %>" 
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        </div>
+                        <div class="p-5 flex flex-col">
+                            <h3 class="text-lg font-bold text-secondary truncate h-14" title="<%= product.name %>">
+                                <%= product.name %>
+                            </h3>
+                            <p class="text-xl font-bold text-red-600 my-3">
+                                <%= product.price.toLocaleString('vi-VN') %> VNĐ
+                            </p>
+                            <a href="/san-pham/<%= product.slug %>" class="mt-auto w-full text-center bg-secondary text-white font-semibold py-2 rounded-md hover:bg-primary hover:text-secondary transition-colors">
+                                Xem Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p class="text-center text-gray-500 py-16">Chưa có sản phẩm nào trong danh mục này.</p>
+        <% } %>
+
+        <!-- Phân trang -->
+        <nav class="mt-12 flex justify-center" aria-label="Pagination">
+            <ul class="inline-flex items-center -space-x-px">
+                <li>
+                    <a href="#" class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                </li>
+                <li>
+                    <a href="#" aria-current="page" class="px-3 py-2 text-white bg-primary border border-primary hover:bg-yellow-400">1</a>
+                </li>
+                <li>
+                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
+                </li>
+                <li>
+                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+</div>
+
+<%- include('../partials/footer') %>

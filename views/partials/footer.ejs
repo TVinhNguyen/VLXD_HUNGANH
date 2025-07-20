@@ -1,0 +1,101 @@
+</main> <!-- Đóng thẻ main được mở từ file khác (vd: index.ejs) -->
+
+<!-- 
+    Thẻ footer sẽ là thẻ bao full-width.
+    Nó sẽ có màu nền và padding dọc.
+-->
+<footer class="bg-secondary text-white/70 pt-20">
+
+    <!-- 
+        Container sẽ giới hạn chiều rộng của toàn bộ nội dung footer
+        để chúng không bị dính vào cạnh màn hình.
+    -->
+    <div class="container mx-auto px-4">
+
+        <!-- ----- HÀNG 1: LƯỚI 4 CỘT THÔNG TIN ----- -->
+        <!-- Bố cục lưới này sẽ tự động responsive -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+            
+            <!-- Cột 1: Về chúng tôi -->
+            <div>
+                <h5 class="text-white text-lg font-bold mb-4 uppercase tracking-wider">VỀ CHÚNG TÔI</h5>
+                <p class="text-sm leading-relaxed">
+                    Nhà cung cấp vật liệu xây dựng uy tín, mang đến giải pháp toàn diện cho mọi công trình với sản phẩm chất lượng và dịch vụ chuyên nghiệp.
+                </p>
+                <div class="mt-4 flex space-x-4">
+                    <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-secondary transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-secondary transition-colors" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-secondary transition-colors" aria-label="Zalo"><i class="fa-solid fa-comment-dots"></i></a>
+                </div>
+            </div>
+            
+            <!-- Cột 2: Danh mục sản phẩm -->
+            <div>
+                <h5 class="text-white text-lg font-bold mb-4 uppercase tracking-wider">SẢN PHẨM</h5>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="/danh-muc/gach-xay-dung" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Gạch Xây Dựng</a></li>
+                    <li><a href="/danh-muc/cat-da-xay-dung" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Cát - Đá Xây Dựng</a></li>
+                    <li><a href="/danh-muc/xi-mang" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Xi Măng</a></li>
+                    <li><a href="/danh-muc/sat-thep-xay-dung" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Sắt Thép Xây Dựng</a></li>
+                </ul>
+            </div>
+            
+            <!-- Cột 3: Chính sách -->
+            <div>
+                <h5 class="text-white text-lg font-bold mb-4 uppercase tracking-wider">CHÍNH SÁCH</h5>
+                 <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Chính sách giao hàng</a></li>
+                    <li><a href="#" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Chính sách đổi trả</a></li>
+                    <li><a href="#" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Chính sách bảo mật</a></li>
+                    <li><a href="#" class="hover:text-primary hover:pl-2 transition-all duration-300 block">Điều khoản dịch vụ</a></li>
+                </ul>
+            </div>
+
+            <!-- Cột 4: Liên hệ -->
+            <div>
+                 <h5 class="text-white text-lg font-bold mb-4 uppercase tracking-wider">LIÊN HỆ</h5>
+                 <ul class="space-y-4 text-sm">
+                    <li class="flex items-start">
+                        <i class="fas fa-map-marker-alt text-primary w-5 mt-1"></i>
+                        <span>123 Đường ABC, Phường X, Quận Y, TP.HCM</span>
+                    </li>
+                     <li class="flex items-start">
+                        <i class="fas fa-phone text-primary w-5 mt-1"></i>
+                        <span>0987.654.321 - 028.1234.5678</span>
+                    </li>
+                     <li class="flex items-start">
+                        <i class="fas fa-envelope text-primary w-5 mt-1"></i>
+                        <span>info@vungxay.com</span>
+                    </li>
+                 </ul>
+            </div>
+        </div>
+
+        <!-- ----- HÀNG 2: BẢN ĐỒ GOOGLE MAPS ----- -->
+        <div class="mt-16">
+            <h5 class="text-white text-lg font-bold mb-4 uppercase tracking-wider text-center md:text-left">VỊ TRÍ CỬA HÀNG</h5>
+            <div class="bg-gray-700 rounded-lg overflow-hidden h-72 w-full">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3837.613843959495!2d108.11842507597032!3d15.876880344556954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314203966d880e5b%3A0x3e016f015097712c!2zMTMzIMSQ4buXIMSQxINuZyBUdXnhu4NuLCDEkOG6oWkgSG_DoCwgxJDhuqFpIEzhu5ljLCBRdeG6o25nIE5hbSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1752949834602!5m2!1svi!2s" 
+                        class="w-full h-full" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+
+    </div> <!-- Đóng container -->
+
+    <!-- ----- DÒNG BẢN QUYỀN Ở CUỐI CÙNG ----- -->
+    <!-- Thẻ div này có nền riêng và chiếm 100% chiều rộng -->
+    <div class="mt-16 border-t border-white/10">
+        <div class="container mx-auto px-4 py-6 text-center text-sm text-white/50">
+            <p>© <%= new Date().getFullYear() %> VLXD Hùng Anh. All Rights Reserved.</p>
+        </div>
+    </div>
+
+</footer>
+
+</body>
+</html>

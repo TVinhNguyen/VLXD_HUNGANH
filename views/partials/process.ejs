@@ -1,0 +1,49 @@
+<%# ----- Process Section ----- %>
+<section class="py-20 bg-slate-50">
+    <div class="container mx-auto px-4">
+
+        <!-- Tiêu đề của section -->
+        <div class="text-center mb-16">
+            <span class="inline-block bg-primary text-secondary font-semibold px-4 py-1 rounded-full text-sm mb-4">
+                Quy trình làm việc
+            </span>
+            <h2 class="text-4xl font-bold text-slate-800 mb-4">Quy Trình Đơn Giản & Hiệu Quả</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                Chúng tôi đã tinh gọn quy trình để giúp bạn nhận được vật liệu mình cần, vào đúng thời điểm bạn cần.
+            </p>
+        </div>
+
+        <% if(typeof processSteps !== 'undefined' && processSteps.length > 0) { %>
+            <!-- 
+                Sử dụng flexbox cho bố cục này để kiểm soát khoảng cách tốt hơn.
+                - Mobile: flex-col, các item tự xếp chồng.
+                - Desktop: flex-row, các item dàn hàng ngang.
+            -->
+            <div class="flex flex-col md:flex-row items-center justify-between md:items-start gap-y-12">
+                
+                <% processSteps.forEach((step, index) => { %>
+                    <!-- Khối chứa từng bước, chiếm khoảng không gian bằng nhau trên desktop -->
+                    <div class="flex-1 text-center px-4">
+                        <!-- Vòng tròn số thứ tự -->
+                        <div class="bg-primary text-secondary w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">
+                            <%= step.step %>
+                        </div>
+                        <!-- Tiêu đề bước -->
+                        <h3 class="text-xl font-bold text-slate-800 mb-2"><%= step.title %></h3>
+                        <!-- Mô tả bước -->
+                        <p class="text-slate-600 leading-relaxed text-base"><%= step.description %></p>
+                    </div>
+
+                    <%# Mũi tên kết nối (chỉ hiện giữa các bước trên desktop) %>
+                    <% if (index < processSteps.length - 1) { %>
+                        <div class="hidden md:flex flex-1 items-center justify-center h-16">
+                            <i class="fas fa-long-arrow-alt-right text-primary/70 text-4xl"></i>
+                        </div>
+                    <% } %>
+                <% }) %>
+
+            </div>
+        <% } %>
+
+    </div>
+</section>

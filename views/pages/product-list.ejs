@@ -1,0 +1,159 @@
+<%- include('../partials/header') %>
+
+<script>
+    const INITIAL_PRODUCTS_DATA = <%- allProductsJson %>;
+</script>
+
+<!-- Thêm dấu phẩy sau filteredProducts -->
+<div x-data="{
+    allProducts: INITIAL_PRODUCTS_DATA,
+    searchTerm: '',
+    selectedCategory: 'Tất cả',
+    viewMode: 'grid',
+    sortBy: 'name',
+    categoryDropdownOpen: false,
+    sortDropdownOpen: false,
+
+    get filteredProducts() {
+        return this.allProducts
+            .filter(product => {
+                const name = (product.name || '').toLowerCase();
+                const desc = (product.description || '').toLowerCase();
+                const matchesSearch = name.includes(this.searchTerm.toLowerCase()) || desc.includes(this.searchTerm.toLowerCase());
+                const matchesCategory = this.selectedCategory === 'Tất cả' || product.category === this.selectedCategory;
+                return matchesSearch && matchesCategory;
+            })
+            .sort((a, b) => {
+                switch (this.sortBy) {
+                    case 'name': return a.name.localeCompare(b.name);
+                    case 'price': return a.priceValue - b.priceValue;
+                    case 'category': return a.category.localeCompare(b.category);
+                    default: return 0;
+                }
+            });
+    }, // <-- DẤU PHẨY QUAN TRỌNG ĐÃ ĐƯỢC THÊM VÀO ĐÂY
+
+    getSelectedCategoryName() {
+        if (this.selectedCategory === 'Tất cả') return 'Tất cả danh mục';
+        return this.selectedCategory;
+    },
+
+    getSortByName() {
+        const options = { name: 'Sắp xếp: Tên', price: 'Sắp xếp: Giá', category: 'Sắp xếp: Danh mục' };
+        return options[this.sortBy];
+    }
+}" class="bg-white">
+
+    <!-- Page Header -->
+    <div class="bg-slate-800 py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold text-white mb-4">Sản Phẩm Của Chúng Tôi</h1>
+            <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                Khám phá danh sách toàn diện các sản phẩm vật liệu xây dựng cao cấp.
+            </p>
+        </div>
+    </div>
+
+    <!-- ... Toàn bộ phần còn lại của trang (Thanh Lọc, Lưới Sản phẩm, ...) giữ nguyên ... -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-4 items-center justify-between mb-8">
+            <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-4 flex-1">
+                <div class="relative flex-1 max-w-md">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-500"></i>
+                    <input type="text" x-model="searchTerm" placeholder="Tìm kiếm sản phẩm..." 
+                           class="w-full h-10 border border-slate-200 rounded-md py-2 px-3 pl-10 bg-white text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 transition-colors">
+                </div>
+                <div @click.away="categoryDropdownOpen = false" class="relative w-full sm:w-48">
+                    <button @click="categoryDropdownOpen = !categoryDropdownOpen"
+                            class="w-full h-10 flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-slate-900 ring-offset-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2">
+                        <span x-text="getSelectedCategoryName()"></span>
+                        <i class="fas fa-chevron-down h-4 w-4 opacity-50 transition-transform" :class="{ 'rotate-180': categoryDropdownOpen }"></i>
+                    </button>
+                    <div x-show="categoryDropdownOpen" x-transition x-cloak
+                         class="absolute z-10 w-full mt-2 rounded-md border bg-white text-slate-900 shadow-md">
+                        <div class="p-1">
+                            <% categories.forEach(category => { %>
+                                <div @click="selectedCategory = '<%= category %>'; categoryDropdownOpen = false"
+                                     class="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-slate-100">
+                                    <%= category === 'Tất cả' ? 'Tất cả danh mục' : category %>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+                <div @click.away="sortDropdownOpen = false" class="relative w-full sm:w-48">
+                    <button @click="sortDropdownOpen = !sortDropdownOpen" class="w-full h-10 flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2">
+                         <span x-text="getSortByName()"></span>
+                         <i class="fas fa-chevron-down h-4 w-4 opacity-50 transition-transform" :class="{ 'rotate-180': sortDropdownOpen }"></i>
+                    </button>
+                    <div x-show="sortDropdownOpen" x-transition x-cloak class="absolute z-10 w-full mt-2 rounded-md border bg-white text-slate-900 shadow-md">
+                        <div class="p-1">
+                            <div @click="sortBy = 'name'; sortDropdownOpen = false" class="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-slate-100">Sắp xếp: Tên</div>
+                            <div @click="sortBy = 'price'; sortDropdownOpen = false" class="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-slate-100">Sắp xếp: Giá</div>
+                            <div @click="sortBy = 'category'; sortDropdownOpen = false" class="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-slate-100">Sắp xếp: Danh mục</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button @click="viewMode = 'grid'" 
+                        :class="viewMode === 'grid' ? 'bg-slate-900 text-slate-50 hover:bg-slate-900/90' : 'bg-transparent border border-slate-200 text-slate-900 hover:bg-slate-100'"
+                        class="w-9 h-9 flex items-center justify-center rounded-md transition-colors">
+                    <i class="fas fa-th-large h-4 w-4"></i>
+                </button>
+                <button @click="viewMode = 'list'"
+                        :class="viewMode === 'list' ? 'bg-slate-900 text-slate-50 hover:bg-slate-900/90' : 'bg-transparent border border-slate-200 text-slate-900 hover:bg-slate-100'"
+                        class="w-9 h-9 flex items-center justify-center rounded-md transition-colors">
+                    <i class="fas fa-list h-4 w-4"></i>
+                </button>
+            </div>
+        </div>
+        <div :class="viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-8' : 'space-y-6'">
+            <template x-for="product in filteredProducts" :key="product.slug">
+                 <div class="group bg-white rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all duration-300"
+                      :class="{ 'flex flex-col sm:flex-row gap-6 p-6': viewMode === 'list' }">
+                    <div :class="{ 'relative overflow-hidden rounded-t-lg': viewMode === 'grid', 'relative w-48 h-32 flex-shrink-0': viewMode === 'list' }">
+                        <img :src="product.image" :alt="product.name" 
+                             :class="{ 'w-full h-48 object-cover group-hover:scale-105 transition-transform': viewMode === 'grid', 'w-full h-full object-cover rounded-lg': viewMode === 'list' }" />
+                        <template x-if="viewMode === 'grid'">
+                            <span class="absolute top-4 right-4 bg-primary text-secondary px-2.5 py-0.5 rounded-full text-xs font-semibold" x-text="product.category"></span>
+                        </template>
+                        <template x-if="!product.inStock">
+                            <span :class="viewMode === 'grid' ? 'top-4 left-4' : 'top-2 left-2'" class="absolute bg-red-600 text-white px-2 py-0.5 rounded-full text-xs font-semibold">Hết Hàng</span>
+                        </template>
+                    </div>
+                    <div :class="{ 'p-6 pt-4': viewMode === 'grid', 'flex-1 flex flex-col': viewMode === 'list' }">
+                         <template x-if="viewMode === 'list'">
+                             <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-slate-800" x-text="product.name"></h3>
+                                <span class="bg-primary text-secondary px-2 py-0.5 rounded-full text-xs font-semibold" x-text="product.category"></span>
+                             </div>
+                        </template>
+                        <template x-if="viewMode === 'grid'">
+                             <h3 class="text-xl font-bold text-slate-800 mb-2 truncate" x-text="product.name"></h3>
+                        </template>
+                        <p class="text-slate-600 mb-4 flex-grow" x-text="product.description"></p>
+                         <div class="mt-auto" :class="{ 'flex justify-between items-center': viewMode === 'list' }">
+                            <p class="text-2xl font-bold text-primary mb-4" x-text="product.price"></p>
+                            <a :href="`/san-pham/${product.slug}`" :disabled="!product.inStock"
+                               class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-slate-900 text-slate-50 hover:bg-slate-900/90 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
+                               :class="{ 'w-full h-10': viewMode === 'grid', 'h-9 px-3': viewMode === 'list', 'opacity-50 cursor-not-allowed': !product.inStock }"
+                               x-text="product.inStock ? 'Xem Chi Tiết' : 'Hết Hàng'">
+                            </a>
+                         </div>
+                    </div>
+                 </div>
+            </template>
+        </div>
+        <div x-show="filteredProducts.length === 0" x-cloak class="text-center py-16">
+            <h3 class="text-2xl font-bold text-slate-800 mb-4">Không tìm thấy sản phẩm</h3>
+            <p class="text-slate-600 mb-8">Vui lòng thử lại với từ khóa hoặc bộ lọc khác.</p>
+            <button @click="searchTerm = ''; selectedCategory = 'Tất cả'" 
+                    class="h-10 px-4 py-2 bg-primary text-secondary font-semibold rounded-md hover:bg-primary/90">
+                Xóa Bộ Lọc
+            </button>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
