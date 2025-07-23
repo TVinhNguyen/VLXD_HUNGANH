@@ -8,7 +8,7 @@ const categorySchema = new mongoose.Schema({
         unique: true
     },
     image: {
-        type: String, // Sẽ lưu URL ảnh (ví dụ từ Cloudinary)
+        type: String, 
         default: ''
     },
     slug: String, // URL thân thiện, ví dụ: gach-xay-dung
