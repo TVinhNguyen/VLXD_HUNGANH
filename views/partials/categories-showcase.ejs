@@ -1,0 +1,121 @@
+<section id="categories" class="py-20 bg-slate-50">
+    <div class="container mx-auto px-4">
+        <!-- Tiêu đề của section (giữ nguyên) -->
+        <div class="text-center mb-16">
+            <span class="inline-block bg-primary text-secondary font-semibold px-4 py-1 rounded-full text-sm mb-4">Danh Mục Sản Phẩm</span>
+            <h2 class="text-4xl font-bold text-slate-800 mb-4">Khám Phá Các Dòng Sản Phẩm Chính</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">Chúng tôi cung cấp đa dạng các loại vật liệu xây dựng, được phân loại rõ ràng để bạn dễ dàng tìm kiếm.</p>
+        </div>
+
+        <% if (categories?.length) { %>
+            <!-- 
+                Wrapper chính của Carousel.
+                Sử dụng flexbox để căn chỉnh các nút và Swiper.
+            -->
+            <div class="flex items-center justify-center">
+                
+                <!-- Nút Previous (Trái) -->
+                <!-- Thay đổi màu nền sang màu vàng (primary) và màu icon -->
+                <button class="swiper-button-prev-custom hidden lg:flex items-center justify-center w-12 h-12 bg-yellow-400 text-slate-800 rounded-full shadow-md hover:bg-yellow-500 transition-colors mr-4 disabled:opacity-50">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <!-- 
+                    Wrapper MỚI cho Swiper và Pagination
+                    - 'relative' để làm gốc định vị cho pagination.
+                    - 'w-full' và 'overflow-hidden' để chứa swiper.
+                -->
+                <div class="relative w-full overflow-hidden">
+                    <!-- Container của Swiper -->
+                    <div class="swiper category-swiper">
+                        <div class="swiper-wrapper">
+                            <% categories.forEach(category => { %>
+                                <div class="swiper-slide h-auto pb-12"> <!-- Tăng padding-bottom để có không gian cho pagination -->
+                                    <a href="/danh-muc/<%= category.slug %>" class="group relative block bg-white rounded-lg shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-2 h-full">
+                                        <div class="relative h-64">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                                            <img src="<%= category.image || '/images/placeholder.svg' %>"
+                                                 alt="<%= category.name %>"
+                                                 loading="lazy"
+                                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                        </div>
+                                        <div class="absolute bottom-0 left-0 p-6">
+                                            <h3 class="text-white text-2xl font-bold transition-colors duration-300 group-hover:text-primary"><%= category.name %></h3>
+                                        </div>
+                                    </a>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                    <!-- 
+                        Pagination (dấu chấm) được chuyển vào trong wrapper mới.
+                        Bây giờ nó sẽ được căn giữa một cách chính xác theo chiều rộng của swiper.
+                    -->
+                    <div class="swiper-pagination absolute bottom-2 left-0 right-0 mx-auto w-auto"></div>
+                </div>
+
+                <!-- Nút Next (Phải) -->
+                <!-- Thay đổi màu nền sang màu vàng (primary) và màu icon -->
+                <button class="swiper-button-next-custom hidden lg:flex items-center justify-center w-12 h-12 bg-yellow-400 text-slate-800 rounded-full shadow-md hover:bg-yellow-500 transition-colors ml-4 disabled:opacity-50">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<!-- Script để khởi tạo Swiper -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper('.category-swiper', {
+      // YÊU CẦU 3: Hiển thị 1 card trên mobile
+      slidesPerView: 1, 
+      spaceBetween: 16,
+      loop: true,
+
+      autoplay: {
+        delay: 1500,
+        disableOnInteraction: false,
+      },
+
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        // Giữ nguyên renderBullet để có style tùy chỉnh
+        renderBullet: function (index, className) {
+          return '<span class="' + className + ' w-2.5 h-2.5 bg-gray-300 transition-colors duration-300"></span>';
+        },
+      },
+
+      navigation: {
+        nextEl: '.swiper-button-next-custom',
+        prevEl: '.swiper-button-prev-custom',
+      },
+
+      breakpoints: {
+        640: { slidesPerView: 2, spaceBetween: 20 },
+        768: { slidesPerView: 3, spaceBetween: 24 },
+        1280: { slidesPerView: 4, spaceBetween: 32 },
+      },
+    });
+  });
+</script>
+
+<style>
+    
+    /* CSS tùy chỉnh cho pagination */
+    .swiper-pagination-bullet {
+        opacity: 1;
+    }
+    /* YÊU CẦU 2 (một phần): Màu vàng cho bullet active */
+    .swiper-pagination-bullet-active {
+        background-color: #FACC15 !important; /* Tailwind yellow-400 */
+        transform: scale(1.2);
+    }
+
+    /* Đảm bảo pagination không bị ẩn */
+    .swiper {
+        overflow: visible;
+    }
+</style>

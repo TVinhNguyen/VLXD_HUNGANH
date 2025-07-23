@@ -59,6 +59,7 @@ exports.getHomepage = async (req, res) => {
             processSteps: processStepsData,
             testimonials: testimonialsData,
             commitments: commitmentsData,
+            categories: categories,
         });
     } catch (err) {
         console.error(err);

@@ -7,6 +7,10 @@ const categorySchema = new mongoose.Schema({
         required: [true, 'Tên danh mục là bắt buộc'],
         unique: true
     },
+    image: {
+        type: String, // Sẽ lưu URL ảnh (ví dụ từ Cloudinary)
+        default: ''
+    },
     slug: String, // URL thân thiện, ví dụ: gach-xay-dung
     description: String,
     metaTitle: String, // Thẻ <title> cho SEO
