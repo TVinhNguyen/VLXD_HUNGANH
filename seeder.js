@@ -1,13 +1,13 @@
-const fs = require('fs');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import fs from 'fs';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 // Load env vars
 dotenv.config({ path: './.env' });
 
 // Load models
-const Product = require('./models/Product');
-const Category = require('./models/Category');
+import Product from './models/Product.js';
+import Category from './models/Category.js';
 
 // Connect to DB
 mongoose.connect(process.env.DATABASE_URL, {

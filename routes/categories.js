@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+import categoryController from '../controllers/categoryController.js';
+
 const router = express.Router();
-const categoryController = require('../controllers/categoryController');
 
 router.get('/', (categoryController.getCategoryPage));
 
 // Route có dạng: /danh-muc/ten-danh-muc-slug
 router.get('/:slug', categoryController.getProductsByCategory);
 
-module.exports = router;
+export default router;

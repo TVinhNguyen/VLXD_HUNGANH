@@ -1,6 +1,6 @@
-const sitemap = require('express-sitemap-xml');
-const Product = require('../models/Product');
-const Category = require('../models/Category');
+import sitemap from 'express-sitemap-xml';
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
 
 async function getUrls() {
     const urls = [];
@@ -34,4 +34,8 @@ async function getUrls() {
     return urls;
 }
 
-exports.generateSitemap = sitemap(getUrls, process.env.SITE_URL);
+const generateSitemap = sitemap(getUrls, process.env.SITE_URL);
+
+export default {
+    generateSitemap
+};

@@ -1,7 +1,7 @@
-const Product = require('../models/Product');
-const Category = require('../models/Category');
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
 
-exports.getHomepage = async (req, res) => {
+const getHomepage = async (req, res) => {
     try {
         const newProducts = await Product.find().sort({ createdAt: -1 }).limit(8).populate('category');
         const categories = await Category.find();
@@ -53,16 +53,18 @@ exports.getHomepage = async (req, res) => {
                 description: 'Chuyên cung cấp các loại vật liệu xây dựng chất lượng cao như gạch, cát, đá, xi măng với giá tốt nhất thị trường.'
             },
             products: newProducts,
-            categories: categories,
             stats: statsData,
             productsByCat: productsByCat,
             processSteps: processStepsData,
             testimonials: testimonialsData,
             commitments: commitmentsData,
-            categories: categories,
         });
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi server');
     }
+};
+
+export default {
+    getHomepage
 };

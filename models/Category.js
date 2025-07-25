@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
+import mongoose from 'mongoose';
+import slugify from 'slugify';
 
 const categorySchema = new mongoose.Schema({
     name: {
@@ -24,4 +24,4 @@ categorySchema.pre('save', function(next) {
 });
 
 const Category = mongoose.model('Category', categorySchema);
-module.exports = Category;
+export default Category;

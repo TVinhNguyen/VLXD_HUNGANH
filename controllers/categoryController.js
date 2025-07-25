@@ -1,49 +1,24 @@
-const Product = require('../models/Product');
-const Category = require('../models/Category');
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
 
-
-
-exports.getCategoryPage = async (req, res) => {
+const getCategoryPage = async (req, res) => {
     try {
-        const categorySlug = req.params.slug;
-        const category = await Category.findOne({ slug: categorySlug });
-
-        if (!category) {
-            // TODO: Render trang 404
-            return res.status(404).send('Danh mục không tồn tại');
-        }
-
-        // Lấy tất cả sản phẩm thuộc danh mục này
-        const productsInCategory = await Product.find({ category: category._id });
-        
-        // Định dạng lại dữ liệu sản phẩm thành JSON cho Alpine.js
-        const formattedProducts = productsInCategory.map(p => ({
-            slug: p.slug,
-            name: p.name,
-            price: `₫${p.price.toLocaleString('vi-VN')}`,
-            priceValue: p.price,
-            image: p.images[0] || 'https://via.placeholder.com/300x200',
-            description: p.metaDescription || "Mô tả ngắn cho sản phẩm này.",
-            inStock: true // Giả sử còn hàng
-        }));
-
+        const categories = await Category.find();
         res.render('pages/category', {
-            // Dữ liệu meta cho SEO, lấy từ DB
             meta: {
-                title: category.metaTitle || `${category.name} - VLXD Hùng Anh`,
-                description: category.metaDescription || `Danh sách sản phẩm thuộc danh mục ${category.name}`
+                title: 'Danh sách danh mục',
+                description: 'Tất cả danh mục sản phẩm'
             },
-            category: category, // Thông tin của danh mục hiện tại (tên, mô tả...)
-            // Truyền dữ liệu JSON vào view
-            categoryProductsJson: JSON.stringify(formattedProducts)
-        });
+            categories
+        })
 
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi Server');
     }
 };
-exports.getProductsByCategory = async (req, res) => {
+
+const getProductsByCategory = async (req, res) => {
     try {
         const categorySlug = req.params.slug;
         const category = await Category.findOne({ slug: categorySlug });
@@ -90,4 +65,9 @@ exports.getProductsByCategory = async (req, res) => {
         console.error(err);
         res.status(500).send('Lỗi server');
     }
+};
+
+export default {
+    getCategoryPage,
+    getProductsByCategory
 };

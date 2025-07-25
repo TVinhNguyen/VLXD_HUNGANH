@@ -1,4 +1,4 @@
-exports.getContactPage = (req, res) => {
+const getContactPage = (req, res) => {
   const contactInfo = [
     {
       icon: 'phone',
@@ -69,7 +69,8 @@ exports.getContactPage = (req, res) => {
     formData: {}
   });
 };
-exports.postContactForm = async (req, res) => {
+
+const postContactForm = async (req, res) => {
   try {
     const { name, email, phone, company, projectType, message, inquiryType } = req.body;
     
@@ -171,4 +172,9 @@ exports.postContactForm = async (req, res) => {
       message: 'Something went wrong. Please try again later.'
     });
   }
+};
+
+export default {
+    getContactPage,
+    postContactForm
 };

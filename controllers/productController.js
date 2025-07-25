@@ -1,7 +1,7 @@
-const Product = require('../models/Product');
-const Category = require('../models/Category');
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
 
-exports.getAllProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
     try {
         // Lấy tất cả sản phẩm và danh mục từ database
         const allProducts = await Product.find().populate('category');
@@ -36,7 +36,7 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-exports.getProductDetail = async (req, res) => {
+const getProductDetail = async (req, res) => {
     try {
         const product = await Product.findOne({ slug: req.params.slug }).populate('category');
 
@@ -79,6 +79,12 @@ exports.getProductDetail = async (req, res) => {
 
 
 // Hiển thị danh sách sản phẩm của một danh mục
-exports.getProductsByCategory = async (req, res) => {
+const getProductsByCategory = async (req, res) => {
     // Logic tương tự
+};
+
+export default {
+    getAllProducts,
+    getProductDetail,
+    getProductsByCategory
 };
