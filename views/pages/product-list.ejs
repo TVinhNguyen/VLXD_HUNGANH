@@ -110,7 +110,7 @@
         </div>
         <div :class="viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-8' : 'space-y-6'">
             <template x-for="product in filteredProducts" :key="product.slug">
-                 <div class="group bg-white rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all duration-300"
+                <div class="group bg-white rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all duration-300"
                       :class="{ 'flex flex-col sm:flex-row gap-6 p-6': viewMode === 'list' }">
                     <div :class="{ 'relative overflow-hidden rounded-t-lg': viewMode === 'grid', 'relative w-48 h-32 flex-shrink-0': viewMode === 'list' }">
                         <img :src="product.image" :alt="product.name" 

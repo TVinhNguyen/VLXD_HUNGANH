@@ -79,10 +79,12 @@ const startServer = async () => {
     const pageRoutes = require('./routes/index.js');
     const productRoutes = require('./routes/products.js');
     const categoryRoutes = require('./routes/categories.js');
+    const contactRoutes = require('./routes/contact.js');
     
     app.use('/', pageRoutes);
     app.use('/san-pham', productRoutes);
     app.use('/danh-muc', categoryRoutes);
+    app.use('/lien-he', contactRoutes);
 
     // --- KHỞI ĐỘNG SERVER ---
     app.listen(PORT, () => {

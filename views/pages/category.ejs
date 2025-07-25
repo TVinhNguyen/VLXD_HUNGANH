@@ -1,89 +1,142 @@
 <%- include('../partials/header') %>
 
-<div class="space-y-12">
-    <!-- Breadcrumbs và Tiêu đề Section -->
-    <section>
-        <!-- Breadcrumbs -->
-        <nav class="text-sm mb-4" aria-label="Breadcrumb">
-            <ol class="list-none p-0 inline-flex space-x-2 text-gray-500">
-                <li><a href="/" class="hover:text-primary">Trang chủ</a></li>
-                <li><span class="mx-2">/</span></li>
-                <li class="font-semibold text-secondary" aria-current="page"><%= category.name %></li>
-            </ol>
-        </nav>
-        <!-- Tiêu đề và Mô tả -->
-        <div class="text-center bg-white p-8 rounded-lg shadow-sm">
-            <h1 class="text-4xl font-bold text-secondary mb-2"><%= category.name %></h1>
-            <% if (category.description) { %>
-                <p class="text-gray-600 max-w-3xl mx-auto"><%- category.description %></p>
-            <% } %>
-        </div>
-    </section>
+<script>
+    const INITIAL_CATEGORY_PRODUCTS = <%- categoryProductsJson %>;
+</script>
 
-    <!-- Thanh Lọc và Lưới Sản Phẩm -->
-    <section>
-        <!-- Thanh lọc và sắp xếp -->
-        <div class="bg-white p-4 rounded-lg shadow-sm mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="font-semibold text-gray-700">
-                Hiển thị <%= products.length %> sản phẩm
+<div x-data="{
+    products: INITIAL_CATEGORY_PRODUCTS,
+    searchTerm: '',
+    viewMode: 'grid',
+    sortBy: 'name',
+    sortDropdownOpen: false,
+
+    // Getter lọc sản phẩm giờ đây chỉ cần lọc theo searchTerm và sắp xếp
+    get filteredProducts() {
+        return this.products
+            .filter(product => {
+                const name = (product.name || '').toLowerCase();
+                const desc = (product.description || '').toLowerCase();
+                return name.includes(this.searchTerm.toLowerCase()) || desc.includes(this.searchTerm.toLowerCase());
+            })
+            .sort((a, b) => {
+                switch (this.sortBy) {
+                    case 'name': return a.name.localeCompare(b.name);
+                    case 'price': return a.priceValue - b.priceValue;
+                    default: return 0;
+                }
+            });
+    },
+
+    getSortByName() {
+        const options = { name: 'Sắp xếp: Tên', price: 'Sắp xếp: Giá' };
+        return options[this.sortBy];
+    }
+}" class="bg-white">
+
+    <!-- Page Header (Nền đen full-width) -->
+    <div class="bg-slate-800 py-16">
+        <div class="container mx-auto px-4 text-center">
+            <!-- Breadcrumbs -->
+            <nav class="text-sm mb-4 text-slate-400" aria-label="Breadcrumb">
+                 <ol class="list-none p-0 inline-flex space-x-2">
+                    <li><a href="/" class="hover:text-primary">Trang chủ</a></li>
+                    <li><span class="mx-2">/</span></li>
+                    <li><a href="/san-pham" class="hover:text-primary">Sản phẩm</a></li>
+                    <li><span class="mx-2">/</span></li>
+                    <li class="font-semibold text-white"><%= category.name %></li>
+                </ol>
+            </nav>
+            <!-- Tên và Mô tả Danh mục -->
+            <h1 class="text-4xl font-bold text-white mb-4"><%= category.name %></h1>
+            <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                <%= category.description %>
             </p>
-            <div class="flex items-center gap-4">
-                <label for="sort" class="text-sm font-medium">Sắp xếp theo:</label>
-                <select id="sort" name="sort" class="rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                    <option>Mới nhất</option>
-                    <option>Giá: Thấp đến cao</option>
-                    <option>Giá: Cao đến thấp</option>
-                    <option>Tên: A-Z</option>
-                </select>
-            </div>
         </div>
+    </div>
 
-        <!-- Lưới Sản Phẩm -->
-        <% if(products.length > 0) { %>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <% products.forEach(product => { %>
-                    <div class="group bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                        <div class="relative overflow-hidden h-56">
-                            <img src="<%= product.images[0] || 'https://via.placeholder.com/400x400.png?text=No+Image' %>" 
-                                 alt="<%= product.name %>" 
-                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                        </div>
-                        <div class="p-5 flex flex-col">
-                            <h3 class="text-lg font-bold text-secondary truncate h-14" title="<%= product.name %>">
-                                <%= product.name %>
-                            </h3>
-                            <p class="text-xl font-bold text-red-600 my-3">
-                                <%= product.price.toLocaleString('vi-VN') %> VNĐ
-                            </p>
-                            <a href="/san-pham/<%= product.slug %>" class="mt-auto w-full text-center bg-secondary text-white font-semibold py-2 rounded-md hover:bg-primary hover:text-secondary transition-colors">
-                                Xem Chi Tiết
-                            </a>
+    <!-- Thanh Lọc và Nội dung chính -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
+            <!-- Thanh tìm kiếm và sắp xếp -->
+            <div class="w-full md:w-auto flex flex-col sm:flex-row gap-4 flex-1">
+                <div class="relative flex-1 max-w-md">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-500"></i>
+                    <input type="text" x-model="searchTerm" placeholder="Tìm trong <%= category.name %>..." 
+                           class="w-full h-10 border border-slate-200 rounded-md py-2 px-3 pl-10 bg-white ...">
+                </div>
+                <!-- Dropdown Sắp xếp -->
+                <div @click.away="sortDropdownOpen = false" class="relative w-full sm:w-48">
+                    <button @click="sortDropdownOpen = !sortDropdownOpen" class="w-full h-10 flex ...">
+                         <span x-text="getSortByName()"></span>
+                         <i class="fas fa-chevron-down ..."></i>
+                    </button>
+                    <div x-show="sortDropdownOpen" x-transition x-cloak class="absolute z-10 w-full ...">
+                        <div class="p-1">
+                            <div @click="sortBy = 'name'; sortDropdownOpen = false" class="... hover:bg-slate-100">Sắp xếp: Tên</div>
+                            <div @click="sortBy = 'price'; sortDropdownOpen = false" class="... hover:bg-slate-100">Sắp xếp: Giá</div>
                         </div>
                     </div>
-                <% }) %>
+                </div>
             </div>
-        <% } else { %>
-            <p class="text-center text-gray-500 py-16">Chưa có sản phẩm nào trong danh mục này.</p>
-        <% } %>
 
-        <!-- Phân trang -->
-        <nav class="mt-12 flex justify-center" aria-label="Pagination">
-            <ul class="inline-flex items-center -space-x-px">
-                <li>
-                    <a href="#" class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                </li>
-                <li>
-                    <a href="#" aria-current="page" class="px-3 py-2 text-white bg-primary border border-primary hover:bg-yellow-400">1</a>
-                </li>
-                <li>
-                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-                </li>
-                <li>
-                    <a href="#" class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </section>
+            <!-- Nút Chế độ xem và Số lượng sản phẩm -->
+            <div class="w-full md:w-auto flex items-center justify-between">
+                <p class="text-slate-600 font-medium hidden sm:block">
+                    Tìm thấy <strong x-text="filteredProducts.length"></strong> sản phẩm
+                </p>
+                <div class="flex items-center gap-2">
+                    <button @click="viewMode = 'grid'" ...><i class="fas fa-th-large ..."></i></button>
+                    <button @click="viewMode = 'list'" ...><i class="fas fa-list ..."></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lưới sản phẩm (Copy y hệt từ product-list.ejs) -->
+        <div :class="viewMode === 'grid' ? 'grid ...' : 'space-y-6'">
+            <template x-for="product in filteredProducts" :key="product.slug">
+                <div class="group bg-white rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all duration-300"
+                      :class="{ 'flex flex-col sm:flex-row gap-6 p-6': viewMode === 'list' }">
+                    <div :class="{ 'relative overflow-hidden rounded-t-lg': viewMode === 'grid', 'relative w-48 h-32 flex-shrink-0': viewMode === 'list' }">
+                        <img :src="product.image" :alt="product.name" 
+                             :class="{ 'w-full h-48 object-cover group-hover:scale-105 transition-transform': viewMode === 'grid', 'w-full h-full object-cover rounded-lg': viewMode === 'list' }" />
+                        <template x-if="viewMode === 'grid'">
+                            <span class="absolute top-4 right-4 bg-primary text-secondary px-2.5 py-0.5 rounded-full text-xs font-semibold" x-text="product.category"></span>
+                        </template>
+                        <template x-if="!product.inStock">
+                            <span :class="viewMode === 'grid' ? 'top-4 left-4' : 'top-2 left-2'" class="absolute bg-red-600 text-white px-2 py-0.5 rounded-full text-xs font-semibold">Hết Hàng</span>
+                        </template>
+                    </div>
+                    <div :class="{ 'p-6 pt-4': viewMode === 'grid', 'flex-1 flex flex-col': viewMode === 'list' }">
+                         <template x-if="viewMode === 'list'">
+                             <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-slate-800" x-text="product.name"></h3>
+                                <span class="bg-primary text-secondary px-2 py-0.5 rounded-full text-xs font-semibold" x-text="product.category"></span>
+                             </div>
+                        </template>
+                        <template x-if="viewMode === 'grid'">
+                             <h3 class="text-xl font-bold text-slate-800 mb-2 truncate" x-text="product.name"></h3>
+                        </template>
+                        <p class="text-slate-600 mb-4 flex-grow" x-text="product.description"></p>
+                         <div class="mt-auto" :class="{ 'flex justify-between items-center': viewMode === 'list' }">
+                            <p class="text-2xl font-bold text-primary mb-4" x-text="product.price"></p>
+                            <a :href="`/san-pham/${product.slug}`" :disabled="!product.inStock"
+                               class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-slate-900 text-slate-50 hover:bg-slate-900/90 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
+                               :class="{ 'w-full h-10': viewMode === 'grid', 'h-9 px-3': viewMode === 'list', 'opacity-50 cursor-not-allowed': !product.inStock }"
+                               x-text="product.inStock ? 'Xem Chi Tiết' : 'Hết Hàng'">
+                            </a>
+                         </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+        
+        <!-- Thông báo không có sản phẩm -->
+        <div x-show="filteredProducts.length === 0" x-cloak ...>
+            <!-- ... Nội dung thông báo ... -->
+        </div>
+    </div>
+
 </div>
 
 <%- include('../partials/footer') %>

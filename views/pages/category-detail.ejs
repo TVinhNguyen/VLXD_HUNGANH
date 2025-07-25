@@ -1,0 +1,101 @@
+<%- include('../partials/header') %>
+
+<script>
+    const INITIAL_PRODUCTS_DATA = <%- productsJson %>;
+</script>
+
+<div x-data="{
+    products: INITIAL_PRODUCTS_DATA,
+    sortBy: 'latest', // Giá trị mặc định là 'Mới nhất'
+
+    get sortedProducts() {
+        // Sao chép mảng để không thay đổi dữ liệu gốc
+        const productsToSort = [...this.products]; 
+
+        switch (this.sortBy) {
+            case 'price-asc':
+                return productsToSort.sort((a, b) => a.price - b.price);
+            case 'price-desc':
+                return productsToSort.sort((a, b) => b.price - a.price);
+            case 'name-asc':
+                return productsToSort.sort((a, b) => a.name.localeCompare(b.name));
+            case 'latest':
+            default:
+                // Sắp xếp theo ngày tạo mới nhất (giảm dần)
+                return productsToSort.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
+    }
+}" class="container mx-auto px-4 py-8">
+
+    <div class="space-y-12">
+        <!-- Breadcrumbs và Tiêu đề Section (giữ nguyên) -->
+        <section>
+            <nav class="text-sm mb-4" aria-label="Breadcrumb">
+                <ol class="list-none p-0 inline-flex space-x-2 text-gray-500">
+                    <li><a href="/" class="hover:text-primary">Trang chủ</a></li>
+                    <li><span>/</span></li>
+                    <li class="font-semibold text-secondary"><%= category.name %></li>
+                </ol>
+            </nav>
+            <div class="text-center bg-white p-8 rounded-lg shadow-sm border">
+                <h1 class="text-4xl font-bold text-secondary mb-2"><%= category.name %></h1>
+                <% if (category.description) { %>
+                    <p class="text-slate-600 max-w-3xl mx-auto"><%- category.description %></p>
+                <% } %>
+            </div>
+        </section>
+
+        <!-- Thanh Lọc và Lưới Sản Phẩm -->
+        <section>
+            <!-- Thanh lọc và sắp xếp ĐỘNG -->
+            <div class="bg-white p-4 rounded-lg shadow-sm border mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="font-semibold text-gray-700">
+                    Hiển thị <span x-text="sortedProducts.length"></span> sản phẩm
+                </p>
+                <div class="flex items-center gap-4">
+                    <label for="sort" class="text-sm font-medium">Sắp xếp theo:</label>
+                    <!-- Select giờ được kết nối với Alpine.js -->
+                    <select id="sort" x-model="sortBy" class="w-full sm:w-48 border border-slate-200 rounded-md py-2 px-3 focus:ring-2 focus:ring-primary focus:outline-none">
+                        <option value="latest">Mới nhất</option>
+                        <option value="price-asc">Giá: Thấp đến cao</option>
+                        <option value="price-desc">Giá: Cao đến thấp</option>
+                        <option value="name-asc">Tên: A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Lưới Sản Phẩm giờ lặp qua 'sortedProducts' -->
+            <div x-show="sortedProducts.length > 0" x-cloak>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <template x-for="product in sortedProducts" :key="product.slug">
+                        <div class="group bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border">
+                            <div class="relative overflow-hidden h-56">
+                                <img :src="product.images[0] || 'https://via.placeholder.com/400x400.png?text=No+Image'" 
+                                     :alt="product.name" 
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-5 flex flex-col">
+                                <h3 class="text-lg font-bold text-secondary truncate h-14" :title="product.name" x-text="product.name"></h3>
+                                <p class="text-xl font-bold text-primary my-3" x-text="product.priceFormatted"></p>
+                                <a :href="`/san-pham/${product.slug}`" class="mt-auto w-full inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-slate-900 text-slate-50 hover:bg-slate-900/90 h-10 px-4 py-2">
+                                    Xem Chi Tiết
+                                </a>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            
+            <div x-show="sortedProducts.length === 0" x-cloak>
+                <p class="text-center text-slate-500 py-16">Chưa có sản phẩm nào trong danh mục này.</p>
+            </div>
+
+            <!-- Phân trang (giữ nguyên, vì logic phân trang cần xử lý ở server) -->
+            <nav class="mt-12 flex justify-center" aria-label="Pagination">
+                 <!-- ... code pagination tĩnh ... -->
+            </nav>
+        </section>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
