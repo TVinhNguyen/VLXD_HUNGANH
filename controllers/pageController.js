@@ -53,6 +53,7 @@ const getHomepage = async (req, res) => {
                 description: 'Chuyên cung cấp các loại vật liệu xây dựng chất lượng cao như gạch, cát, đá, xi măng với giá tốt nhất thị trường.'
             },
             products: newProducts,
+            categories: categories,
             stats: statsData,
             productsByCat: productsByCat,
             processSteps: processStepsData,
