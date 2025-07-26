@@ -49,7 +49,7 @@ const getHomepage = async (req, res) => {
 
         res.render('pages/index', {
             meta: {
-                title: 'Trang chủ - Cung cấp Vật liệu Xây dựng Uy tín',
+                title: 'Trang chủ - Vật liệu Xây dựng Hùng Anh',
                 description: 'Chuyên cung cấp các loại vật liệu xây dựng chất lượng cao như gạch, cát, đá, xi măng với giá tốt nhất thị trường.'
             },
             products: newProducts,

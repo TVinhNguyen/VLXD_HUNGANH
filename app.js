@@ -40,10 +40,12 @@ import pageRoutes from './routes/index.js';
 import productRoutes from './routes/products.js';
 import categoryRoutes from './routes/categories.js';
 import contactRoutes from './routes/contact.js';
+import aboutRoutes from './routes/about.js';
 
 app.use('/', pageRoutes);
 app.use('/san-pham', productRoutes);
 app.use('/danh-muc', categoryRoutes);
 app.use('/lien-he', contactRoutes);
+app.use('/gioi-thieu', aboutRoutes);
 
 export default app;

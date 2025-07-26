@@ -23,7 +23,7 @@ const getAllProducts = async (req, res) => {
 
         res.render('pages/product-list', {
             meta: {
-                title: 'Tất cả sản phẩm - VLXD Hùng Anh',
+                title: 'Tất cả sản phẩm - Vật liệu Xây dựng Hùng Anh',
                 description: 'Khám phá danh sách đầy đủ các sản phẩm vật liệu xây dựng chất lượng cao của chúng tôi.'
             },
             // Dữ liệu cần được JSON.stringify để Alpine.js có thể đọc được

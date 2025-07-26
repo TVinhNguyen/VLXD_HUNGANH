@@ -3,7 +3,7 @@
 <script>
     const INITIAL_PRODUCTS_DATA = <%- allProductsJson %>;
 </script>
-
+<main>
 <!-- Thêm dấu phẩy sau filteredProducts -->
 <div x-data="{
     allProducts: INITIAL_PRODUCTS_DATA,
@@ -155,5 +155,5 @@
         </div>
     </div>
 </div>
-
+</main>
 <%- include('../partials/footer') %>

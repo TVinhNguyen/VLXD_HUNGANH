@@ -6,7 +6,7 @@ const getCategoryPage = async (req, res) => {
         const categories = await Category.find();
         res.render('pages/category', {
             meta: {
-                title: 'Danh sách danh mục',
+                title: 'Danh sách danh mục - Vật liệu Xây dựng Hùng Anh',
                 description: 'Tất cả danh mục sản phẩm'
             },
             categories
@@ -53,7 +53,7 @@ const getProductsByCategory = async (req, res) => {
         res.render('pages/category-detail', { // Hoặc 'pages/category-detail' tùy theo tên file của bạn
             // Dữ liệu meta được lấy trực tiếp từ DB, rất tốt cho SEO
             meta: {
-                title: category.metaTitle || `${category.name} - VLXD Hùng Anh`,
+                title: category.metaTitle || `${category.name} - Vật liệu Xây dựng Hùng Anh`,
                 description: category.metaDescription || `Các sản phẩm thuộc danh mục ${category.name}`
             },
             category: category,
