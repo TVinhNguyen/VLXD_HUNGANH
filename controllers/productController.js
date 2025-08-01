@@ -24,8 +24,11 @@ const getAllProducts = async (req, res) => {
         res.render('pages/product-list', {
             meta: {
                 title: 'Tất cả sản phẩm - Vật liệu Xây dựng Hùng Anh',
-                description: 'Khám phá danh sách đầy đủ các sản phẩm vật liệu xây dựng chất lượng cao của chúng tôi.'
+                description: 'Khám phá danh sách đầy đủ các sản phẩm vật liệu xây dựng chất lượng cao của chúng tôi.',
+                keywords: 'sản phẩm vật liệu xây dựng, danh sách sản phẩm, VLXD',
+                canonical: `${process.env.SITE_URL}/san-pham`
             },
+            currentPath: '/san-pham',
             // Dữ liệu cần được JSON.stringify để Alpine.js có thể đọc được
             allProductsJson: JSON.stringify(formattedProducts),
             categories: formattedCategories
@@ -65,8 +68,14 @@ const getProductDetail = async (req, res) => {
         res.render('pages/product-detail', {
             meta: {
                 title: product.metaTitle,
-                description: product.metaDescription
+                description: product.metaDescription,
+                keywords: `${product.name}, vật liệu xây dựng, ${product.category.name}`,
+                canonical: `${process.env.SITE_URL}/san-pham/${product.slug}`,
+                ogType: 'product',
+                ogImage: product.images[0] ? `${process.env.SITE_URL}${product.images[0]}` : undefined
             },
+            structuredData: product.structuredData,
+            currentPath: `/san-pham/${product.slug}`,
             product: product,
             relatedProducts: relatedProducts // <-- Truyền sản phẩm liên quan vào view
         });

@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
     <title><%= meta.title %></title>
+    <meta name="title" content="<%= meta.title %>">
     <meta name="description" content="<%= meta.description %>">
+    <meta name="keywords" content="<%= meta.keywords || 'vật liệu xây dựng, gạch, xi măng, cát, đá, thép xây dựng, VLXD Hùng Anh' %>">
+    <meta name="author" content="VLXD Hùng Anh">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<%= meta.canonical || (process.env.SITE_URL + (typeof currentPath !== 'undefined' ? currentPath : '')) %>">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="<%= meta.ogType || 'website' %>">
+    <meta property="og:url" content="<%= meta.canonical || (process.env.SITE_URL + (typeof currentPath !== 'undefined' ? currentPath : '')) %>">
+    <meta property="og:title" content="<%= meta.title %>">
+    <meta property="og:description" content="<%= meta.description %>">
+    <meta property="og:image" content="<%= meta.ogImage || (process.env.SITE_URL + '/images/vlxd-hung-anh.jpeg') %>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="VLXD Hùng Anh">
+    <meta property="og:locale" content="vi_VN">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<%= meta.canonical || (process.env.SITE_URL + (typeof currentPath !== 'undefined' ? currentPath : '')) %>">
+    <meta property="twitter:title" content="<%= meta.title %>">
+    <meta property="twitter:description" content="<%= meta.description %>">
+    <meta property="twitter:image" content="<%= meta.ogImage || (process.env.SITE_URL + '/images/vlxd-hung-anh.jpeg') %>">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#f59e0b">
+    <meta name="msapplication-TileColor" content="#f59e0b">
+    
+    <!-- Verification -->
     <meta name="google-site-verification" content="wIJAn_WIv5p4yP--pnG1wPijpT_-Liab3aiOdl-1bjQ" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +46,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="/css/style.css">
+    
+    <!-- Structured Data -->
+    <% if (typeof structuredData !== 'undefined' && structuredData) { %>
+    <script type="application/ld+json">
+    <%- JSON.stringify(structuredData) %>
+    </script>
+    <% } %>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 <body class="font-sans bg-gray-100">
 <div x-data="{ isMenuOpen: false, isScrolled: false }"

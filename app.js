@@ -19,6 +19,12 @@ const __dirname = path.resolve();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve robots.txt
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

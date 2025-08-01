@@ -47,11 +47,42 @@ const getHomepage = async (req, res) => {
             })
         );
 
+        // Organization structured data for homepage
+        const organizationStructuredData = {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "VLXD Hùng Anh",
+            "url": process.env.SITE_URL,
+            "logo": `${process.env.SITE_URL}/images/vlxd-hung-anh.jpeg`,
+            "description": "Chuyên cung cấp các loại vật liệu xây dựng chất lượng cao như gạch, cát, đá, xi măng với giá tốt nhất thị trường",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "123 Đường ABC",
+                "addressLocality": "TP.HCM",
+                "addressCountry": "VN"
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+84123456789",
+                "contactType": "customer service",
+                "availableLanguage": "Vietnamese"
+            },
+            "sameAs": [
+                "https://facebook.com/vlxdhunganh",
+                "https://instagram.com/vlxdhunganh"
+            ]
+        };
+
         res.render('pages/index', {
             meta: {
                 title: 'Trang chủ - Vật liệu Xây dựng Hùng Anh',
-                description: 'Chuyên cung cấp các loại vật liệu xây dựng chất lượng cao như gạch, cát, đá, xi măng với giá tốt nhất thị trường.'
+                description: 'Chuyên cung cấp các loại vật liệu xây dựng chất lượng cao như gạch, cát, đá, xi măng với giá tốt nhất thị trường.',
+                keywords: 'vật liệu xây dựng, gạch, xi măng, cát, đá, thép xây dựng, VLXD, Hùng Anh, TP.HCM',
+                canonical: process.env.SITE_URL,
+                ogType: 'website'
             },
+            structuredData: organizationStructuredData,
+            currentPath: '/',
             products: newProducts,
             categories: categories,
             stats: statsData,

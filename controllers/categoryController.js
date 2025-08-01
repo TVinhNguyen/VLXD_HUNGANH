@@ -7,8 +7,11 @@ const getCategoryPage = async (req, res) => {
         res.render('pages/category', {
             meta: {
                 title: 'Danh sách danh mục - Vật liệu Xây dựng Hùng Anh',
-                description: 'Tất cả danh mục sản phẩm'
+                description: 'Tất cả danh mục sản phẩm',
+                keywords: 'danh mục vật liệu xây dựng, phân loại sản phẩm',
+                canonical: `${process.env.SITE_URL}/danh-muc`
             },
+            currentPath: '/danh-muc',
             categories
         })
 
@@ -54,8 +57,11 @@ const getProductsByCategory = async (req, res) => {
             // Dữ liệu meta được lấy trực tiếp từ DB, rất tốt cho SEO
             meta: {
                 title: category.metaTitle || `${category.name} - Vật liệu Xây dựng Hùng Anh`,
-                description: category.metaDescription || `Các sản phẩm thuộc danh mục ${category.name}`
+                description: category.metaDescription || `Các sản phẩm thuộc danh mục ${category.name}`,
+                keywords: `${category.name}, vật liệu xây dựng, sản phẩm ${category.name}`,
+                canonical: `${process.env.SITE_URL}/danh-muc/${category.slug}`
             },
+            currentPath: `/danh-muc/${category.slug}`,
             category: category,
             products: productsInCategory, // Dữ liệu gốc vẫn giữ lại để EJS có thể đếm số lượng ban đầu
             productsJson: formattedProductsJson // <-- TRUYỀN CHUỖI JSON VÀO VIEW
