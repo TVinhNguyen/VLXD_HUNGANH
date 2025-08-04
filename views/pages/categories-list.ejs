@@ -1,0 +1,93 @@
+<%- include('../partials/header') %>
+
+<main>
+    <!-- Page Header -->
+    <div class="bg-slate-800 py-16">
+        <div class="container mx-auto px-4 text-center">
+            <!-- Breadcrumbs -->
+            <nav class="text-sm mb-4 text-slate-400" aria-label="Breadcrumb">
+                <ol class="list-none p-0 inline-flex space-x-2">
+                    <li><a href="/" class="hover:text-primary">Trang chủ</a></li>
+                    <li><span class="mx-2">/</span></li>
+                    <li class="font-semibold text-white">Danh mục sản phẩm</li>
+                </ol>
+            </nav>
+            <h1 class="text-4xl font-bold text-white mb-4">Danh Mục Sản Phẩm</h1>
+            <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                Khám phá các danh mục sản phẩm vật liệu xây dựng chất lượng cao của chúng tôi
+            </p>
+        </div>
+    </div>
+
+    <!-- Categories Grid -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <% categories.forEach(category => { %>
+                <div class="group bg-white rounded-lg border shadow-sm hover:shadow-xl transition-all duration-300">
+                    <div class="relative overflow-hidden rounded-t-lg">
+                        <% if (category.image) { %>
+                            <img src="<%= category.image %>" alt="<%= category.name %>" 
+                                 class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <% } else { %>
+                            <div class="w-full h-48 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                                <i class="fas fa-cube text-4xl text-slate-400"></i>
+                            </div>
+                        <% } %>
+                        <div class="absolute top-4 right-4 bg-primary text-secondary px-2.5 py-0.5 rounded-full text-xs font-semibold">
+                            <%= category.productCount || 0 %> sản phẩm
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2"><%= category.name %></h3>
+                        <% if (category.description) { %>
+                            <p class="text-slate-600 mb-4 line-clamp-3"><%= category.description %></p>
+                        <% } %>
+                        <a href="/danh-muc/<%= category.slug %>" 
+                           class="inline-flex items-center justify-center w-full h-10 rounded-md text-sm font-medium transition-colors bg-slate-900 text-slate-50 hover:bg-slate-900/90 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2">
+                            Xem Sản Phẩm
+                            <i class="fas fa-arrow-right ml-2 h-4 w-4"></i>
+                        </a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <% if (categories.length === 0) { %>
+            <div class="text-center py-16">
+                <div class="max-w-md mx-auto">
+                    <i class="fas fa-folder-open text-6xl text-slate-300 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Chưa có danh mục nào</h3>
+                    <p class="text-slate-600 mb-8">Hiện tại chưa có danh mục sản phẩm nào được tạo.</p>
+                    <a href="/san-pham" 
+                       class="inline-flex items-center justify-center h-10 px-4 py-2 bg-primary text-secondary font-semibold rounded-md hover:bg-primary/90">
+                        Xem Tất Cả Sản Phẩm
+                    </a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="bg-slate-50 py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-slate-800 mb-4">Cần Tư Vấn Sản Phẩm?</h2>
+            <p class="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+                Đội ngũ chuyên gia của chúng tôi sẵn sàng hỗ trợ bạn chọn lựa sản phẩm phù hợp nhất
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/lien-he" 
+                   class="inline-flex items-center justify-center h-12 px-6 py-3 bg-primary text-secondary font-semibold rounded-md hover:bg-primary/90 transition-colors">
+                    <i class="fas fa-phone mr-2"></i>
+                    Liên Hệ Ngay
+                </a>
+                <a href="/san-pham" 
+                   class="inline-flex items-center justify-center h-12 px-6 py-3 bg-white text-slate-800 font-semibold rounded-md border border-slate-200 hover:bg-slate-50 transition-colors">
+                    <i class="fas fa-eye mr-2"></i>
+                    Xem Tất Cả Sản Phẩm
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>

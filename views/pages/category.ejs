@@ -87,14 +87,22 @@
                     Tìm thấy <strong x-text="filteredProducts.length"></strong> sản phẩm
                 </p>
                 <div class="flex items-center gap-2">
-                    <button @click="viewMode = 'grid'" ...><i class="fas fa-th-large ..."></i></button>
-                    <button @click="viewMode = 'list'" ...><i class="fas fa-list ..."></i></button>
+                    <button @click="viewMode = 'grid'" 
+                            :class="viewMode === 'grid' ? 'bg-slate-900 text-slate-50 hover:bg-slate-900/90' : 'bg-transparent border border-slate-200 text-slate-900 hover:bg-slate-100'"
+                            class="w-9 h-9 flex items-center justify-center rounded-md transition-colors">
+                        <i class="fas fa-th-large h-4 w-4"></i>
+                    </button>
+                    <button @click="viewMode = 'list'"
+                            :class="viewMode === 'list' ? 'bg-slate-900 text-slate-50 hover:bg-slate-900/90' : 'bg-transparent border border-slate-200 text-slate-900 hover:bg-slate-100'"
+                            class="w-9 h-9 flex items-center justify-center rounded-md transition-colors">
+                        <i class="fas fa-list h-4 w-4"></i>
+                    </button>
                 </div>
             </div>
         </div>
         
-        <!-- Lưới sản phẩm (Copy y hệt từ product-list.ejs) -->
-        <div :class="viewMode === 'grid' ? 'grid ...' : 'space-y-6'">
+        <!-- Lưới sản phẩm -->
+        <div :class="viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-8' : 'space-y-6'">
             <template x-for="product in filteredProducts" :key="product.slug">
                 <div class="group bg-white rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all duration-300"
                       :class="{ 'flex flex-col sm:flex-row gap-6 p-6': viewMode === 'list' }">
@@ -133,8 +141,17 @@
         </div>
         
         <!-- Thông báo không có sản phẩm -->
-        <div x-show="filteredProducts.length === 0" x-cloak ...>
-            <!-- ... Nội dung thông báo ... -->
+        <div x-show="filteredProducts.length === 0" x-cloak class="text-center py-16">
+            <div class="max-w-md mx-auto">
+                <i class="fas fa-search text-6xl text-slate-300 mb-4"></i>
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">Không tìm thấy sản phẩm</h3>
+                <p class="text-slate-600 mb-8">Vui lòng thử lại với từ khóa khác hoặc xóa bộ lọc.</p>
+                <button @click="searchTerm = ''" 
+                        class="inline-flex items-center justify-center h-10 px-4 py-2 bg-primary text-secondary font-semibold rounded-md hover:bg-primary/90 transition-colors">
+                    <i class="fas fa-times mr-2"></i>
+                    Xóa Bộ Lọc
+                </button>
+            </div>
         </div>
     </div>
 

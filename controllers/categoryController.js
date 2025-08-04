@@ -4,16 +4,27 @@ import Category from '../models/Category.js';
 const getCategoryPage = async (req, res) => {
     try {
         const categories = await Category.find();
-        res.render('pages/category', {
+        // Count products for each category
+        const categoriesWithCount = await Promise.all(
+            categories.map(async (category) => {
+                const productCount = await Product.countDocuments({ category: category._id });
+                return {
+                    ...category.toObject(),
+                    productCount
+                };
+            })
+        );
+
+        res.render('pages/categories-list', {
             meta: {
                 title: 'Danh sách danh mục - Vật liệu Xây dựng Hùng Anh',
-                description: 'Tất cả danh mục sản phẩm',
-                keywords: 'danh mục vật liệu xây dựng, phân loại sản phẩm',
+                description: 'Tất cả danh mục sản phẩm vật liệu xây dựng chất lượng cao',
+                keywords: 'danh mục vật liệu xây dựng, phân loại sản phẩm, gạch, xi măng, sắt thép',
                 canonical: `${process.env.SITE_URL}/danh-muc`
             },
             currentPath: '/danh-muc',
-            categories
-        })
+            categories: categoriesWithCount
+        });
 
     } catch (err) {
         console.error(err);
@@ -36,24 +47,21 @@ const getProductsByCategory = async (req, res) => {
         // Lấy tất cả sản phẩm thuộc danh mục này
         const productsInCategory = await Product.find({ category: category._id });
         
-        // --- BƯỚC THÊM MỚI ---
-        // Định dạng lại dữ liệu sản phẩm thành một chuỗi JSON để Alpine.js có thể sắp xếp
-        const formattedProductsJson = JSON.stringify(
+        // Định dạng lại dữ liệu sản phẩm để phù hợp với template
+        const categoryProductsJson = JSON.stringify(
             productsInCategory.map(p => ({
-                // Các trường để hiển thị
                 slug: p.slug,
                 name: p.name,
-                priceFormatted: `₫${p.price.toLocaleString('vi-VN')}`,
-                images: p.images, // Giữ nguyên mảng ảnh
-                
-                // Các trường để sắp xếp
-                price: p.price,
-                createdAt: p.createdAt // Cần cho việc sắp xếp 'Mới nhất'
+                description: p.description,
+                price: `${p.price.toLocaleString('vi-VN')} VNĐ`,
+                priceValue: p.price,
+                image: p.images && p.images.length > 0 ? p.images[0] : '/images/placeholder.jpg',
+                category: category.name,
+                inStock: p.inStock !== false
             }))
         );
 
-        // Đổi tên file render sang file view mới của bạn nếu cần
-        res.render('pages/category-detail', { // Hoặc 'pages/category-detail' tùy theo tên file của bạn
+        res.render('pages/category', {
             // Dữ liệu meta được lấy trực tiếp từ DB, rất tốt cho SEO
             meta: {
                 title: category.metaTitle || `${category.name} - Vật liệu Xây dựng Hùng Anh`,
@@ -63,8 +71,8 @@ const getProductsByCategory = async (req, res) => {
             },
             currentPath: `/danh-muc/${category.slug}`,
             category: category,
-            products: productsInCategory, // Dữ liệu gốc vẫn giữ lại để EJS có thể đếm số lượng ban đầu
-            productsJson: formattedProductsJson // <-- TRUYỀN CHUỖI JSON VÀO VIEW
+            products: productsInCategory,
+            categoryProductsJson: categoryProductsJson
         });
 
     } catch (err) {
